@@ -1,0 +1,14 @@
+[ 2024-05-01 23:42:35,156 ] 26 root - INFO - Entered the data ingestion method or component
+[ 2024-05-01 23:42:35,285 ] 29 root - INFO - Read the dataset as dataframe
+[ 2024-05-01 23:42:35,649 ] 35 root - INFO - Train test split initiated
+[ 2024-05-01 23:42:36,007 ] 42 root - INFO - Ingestion of the data is completed
+[ 2024-05-01 23:42:36,164 ] 89 root - INFO - Read train and test data completed
+[ 2024-05-01 23:42:36,164 ] 91 root - INFO - Obtaining preprocessing object
+[ 2024-05-01 23:42:36,179 ] 64 root - INFO - Categorical columns with less classes: Pipeline(steps=[('imputer', SimpleImputer(strategy='most_frequent')),
+                ('encoder', OneHotEncoder()),
+                ('scaler', StandardScaler(with_mean=False))])
+[ 2024-05-01 23:42:36,179 ] 65 root - INFO - Categorical columns with multiple classes: Pipeline(steps=[('imputer', SimpleImputer(strategy='most_frequent')),
+                ('TargetEncoder', TargetEncoder()),
+                ('scaler', StandardScaler(with_mean=False))])
+[ 2024-05-01 23:42:36,179 ] 66 root - INFO - Numerical columns: ['Delivery_person_Age', 'Delivery_person_Ratings', 'multiple_deliveries', 'Vehicle_condition']
+[ 2024-05-01 23:42:36,179 ] 104 root - INFO - Applying preprocessing object on training dataframe and testing dataframe.

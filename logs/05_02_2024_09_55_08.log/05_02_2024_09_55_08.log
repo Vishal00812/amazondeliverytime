@@ -1,0 +1,3 @@
+[ 2024-05-02 09:58:10,127 ] 106 root - INFO - Exception Occured in prediction pipeline
+[ 2024-05-02 09:58:55,239 ] 102 root - INFO - Dataframe Gathered
+[ 2024-05-02 09:58:55,923 ] 25 root - INFO - Exception occured in prediction pipeline

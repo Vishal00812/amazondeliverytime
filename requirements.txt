@@ -7,4 +7,5 @@ streamlit
 catboost
 xgboost
 dill
-#-e .
+category_encoders
+-e .

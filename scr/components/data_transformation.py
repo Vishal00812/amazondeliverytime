@@ -7,30 +7,29 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
+from category_encoders.target_encoder import TargetEncoder
 
 from scr.exception import CustomException
 from scr.logger import logging
 import os
 
 from scr.utils import save_object
-
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join('artifacts',"preprocessor.pkl")
+    preprocessor_obj_file_path=os.path.join('artifacts',"proprocessor.pkl")
 
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config=DataTransformationConfig()
 
     def get_data_transformer_object(self):
-        '''
-        This function is responsible for data transformation
-        
-        '''
+ #Delivery_person_Age,Delivery_person_Ratings,Restaurant_latitude,Restaurant_longitude,Delivery_location_latitude,
+ #Delivery_location_longitude,Order_Date,Time_Orderd,Time_Order_picked,Weather_conditions
+ #,Road_traffic_density,Vehicle_condition,Type_of_order,Type_of_vehicle,multiple_deliveries,Festival,City,Time_taken (min)      
         try:
             numerical_columns = ['Delivery_person_Age','Delivery_person_Ratings','multiple_deliveries','Vehicle_condition']
 
-            categorical_columns_with_less_classes=['Weather_conditions','Road_traffic_density',
+            categorical_columns_with_less_classes=['Weather_condition','Road_traffic_density',
                                        'Type_of_order','Type_of_vehicle','Festival','City']
 
             categorical_columns_with_multiple_classes=['Order_Date','Time_Orderd','Time_Order_picked']
@@ -58,6 +57,7 @@ class DataTransformation:
 
                 steps=[
                 ("imputer",SimpleImputer(strategy="most_frequent")),
+                ("TargetEncoder",TargetEncoder()),
                 ("scaler",StandardScaler(with_mean=False))
                 ]
 
@@ -70,9 +70,6 @@ class DataTransformation:
             preprocessor=ColumnTransformer(
                 [
                 ("num_pipeline",num_pipeline,numerical_columns),
-                
-                    
-                
                 ("cat_pipeline_with_less_classes",cat_pipeline_with_less_classes,categorical_columns_with_less_classes),
                 ("cat_pipeline_with_multiple_classes",cat_pipeline_with_multiple_classes,categorical_columns_with_multiple_classes)
                     
@@ -81,12 +78,9 @@ class DataTransformation:
 
             return preprocessor
         
+        
         except Exception as e:
             raise CustomException(e,sys)
-        
-
-
-
         
     def initiate_data_transformation(self,train_path,test_path):
 
@@ -94,15 +88,14 @@ class DataTransformation:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
 
-            logging.info("Reading of train and test data completed")
+            logging.info("Read train and test data completed")
 
             logging.info("Obtaining preprocessing object")
 
             preprocessing_obj=self.get_data_transformer_object()
 
             target_column_name="Time_taken (min)"
-            numerical_columns = ['Delivery_person_Age','Delivery_person_Ratings','multiple_deliveries','Vehicle_condition']
-
+            numerical_columns =  ['Delivery_person_Age','Delivery_person_Ratings','multiple_deliveries','Vehicle_condition']
 
             input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df=train_df[target_column_name]
